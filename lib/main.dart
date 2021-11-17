@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'states/counter.dart';
+import 'states/even_counter.dart';
+
+final _isEvenProvider = Provider<bool>((ref) {
+  final counter = ref.watch(_counterProvider);
+  return (counter.count % 2 == 0);
+});
+final _evenCounterProviderAsSeparateState =
+    StateNotifierProvider<EvenCounterNotifier, EvenCounterModel>((ref) {
+  return EvenCounterNotifier();
+});
 
 final _counterProvider =
     StateNotifierProvider<CounterNotifier, CounterModel>((ref) {
@@ -16,7 +26,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -54,13 +63,40 @@ class MyHomePage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Count: $counter'),
+            CounterIsEven(),
+            EvenCounter(),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => ref.read(_counterProvider.notifier).increment(),
+        onPressed: () {
+          ref.read(_counterProvider.notifier).increment();
+          final isEven = ref.watch(_isEvenProvider);
+          if (isEven)
+            ref.read(_evenCounterProviderAsSeparateState.notifier).increment();
+        },
         child: Icon(Icons.add),
       ),
     );
+  }
+}
+
+class CounterIsEven extends ConsumerWidget {
+  const CounterIsEven({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEven = ref.watch(_isEvenProvider);
+    return Text(isEven ? 'Is even' : 'Not even');
+  }
+}
+
+class EvenCounter extends ConsumerWidget {
+  const EvenCounter({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final evenCount = ref.watch(_evenCounterProviderAsSeparateState).count;
+    return Text('Even Number Count: $evenCount');
   }
 }
