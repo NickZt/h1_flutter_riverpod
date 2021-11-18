@@ -8,9 +8,21 @@ final _isEvenProvider = Provider<bool>((ref) {
   final counter = ref.watch(_counterProvider);
   return (counter.count % 2 == 0);
 });
+
+// StateNotifier and even numbers counter in a separate class
 final _evenCounterProviderAsSeparateState =
     StateNotifierProvider<EvenCounterNotifier, EvenCounterModel>((ref) {
   return EvenCounterNotifier();
+});
+
+//  StateProvider and even numbers counter in a state provider
+final _evenCounterProvider = Provider<int>((ref) {
+  ref.listen<bool>(_isEvenProvider, (previous, next) {
+    if (next) {
+      ref.state++;
+    }
+  });
+  return 0;
 });
 
 final _counterProvider =
@@ -65,6 +77,7 @@ class MyHomePage extends ConsumerWidget {
             Text('Count: $counter'),
             CounterIsEven(),
             EvenCounter(),
+            EvenCounterFromProvider(),
           ],
         ),
       ),
@@ -91,12 +104,23 @@ class CounterIsEven extends ConsumerWidget {
   }
 }
 
+class EvenCounterFromProvider extends ConsumerWidget {
+  const EvenCounterFromProvider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final evenCount = ref.watch(_evenCounterProvider);
+    return Text('(StateProvider) Even Number Count: $evenCount');
+  }
+}
+
 class EvenCounter extends ConsumerWidget {
   const EvenCounter({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final evenCount = ref.watch(_evenCounterProviderAsSeparateState).count;
-    return Text('Even Number Count: $evenCount');
+    return Text(' (StateNotifier) Even Number Count: $evenCount');
   }
+
 }
