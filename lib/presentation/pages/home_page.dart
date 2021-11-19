@@ -8,31 +8,69 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final counter = ref.watch(counterProvider).count;
+    final state = ref.watch(viewStateProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Counter Provider Page'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Count: $counter'),
-            CounterIsEven(),
-            EvenCounter(),
-            EvenCounterFromProvider(),
-          ],
-        ),
-      ),
+      body: render(state, ref),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ref.read(counterProvider.notifier).increment();
-          final isEven = ref.watch(isEvenProvider);
-          if (isEven)
-            ref.read(evenCounterProviderAsSeparateState.notifier).increment();
+          onFabPressed(ref);
         },
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  Widget render(state, WidgetRef ref ) {
+    return state.when(
+      even: () =>
+          showEven(ref),
+      odd: () =>
+          showOdd(ref),
+    );
+  }
+
+  Widget showEven(WidgetRef ref) {
+    final counter = buildCount(ref);
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Count: $counter'),
+          CounterIsEven(),
+          EvenCounter(),
+          EvenCounterFromProvider(),
+        ],
+      ),
+    );
+  }
+
+  Widget showOdd(WidgetRef ref) {
+    final counter = buildCount(ref);
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CounterIsEven(),
+          EvenCounter(),
+          EvenCounterFromProvider(),
+          Text('Count: $counter'),
+        ],
+      ),
+    );
+  }
+
+  buildCount(WidgetRef ref) =>
+      ref
+          .watch(counterProvider)
+          .count;
+
+  void onFabPressed(WidgetRef ref) {
+    ref.read(counterProvider.notifier).increment();
+    final isEven = ref.watch(isEvenProvider);
+    if (isEven)
+      ref.read(evenCounterProviderAsSeparateState.notifier).increment();
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:h1_flutter_riverpod/data/models/counter_model.dart';
-import 'package:h1_flutter_riverpod/presentation/manager/bindings/counter_notifier.dart';
 import 'package:h1_flutter_riverpod/presentation/manager/bindings/even_counter_notifier.dart';
+import 'package:h1_flutter_riverpod/presentation/manager/bindings/counter_notifier.dart';
+import 'package:h1_flutter_riverpod/presentation/manager/bindings/view_states_notifier.dart';
+import 'package:h1_flutter_riverpod/presentation/manager/bindings/views_state.dart';
 
 final isEvenProvider = Provider.autoDispose<bool>((ref) {
   final counter = ref.watch(counterProvider);
@@ -10,8 +12,7 @@ final isEvenProvider = Provider.autoDispose<bool>((ref) {
 
 // StateNotifier and even numbers counter in a separate class
 final evenCounterProviderAsSeparateState =
-    StateNotifierProvider.autoDispose<EvenCounterNotifier, EvenCounterModel>(
-        (ref) {
+    StateNotifierProvider.autoDispose<EvenCounterNotifier, EvenCounterModel>((ref) {
   return EvenCounterNotifier();
 });
 
@@ -29,3 +30,7 @@ final counterProvider =
     StateNotifierProvider.autoDispose<CounterNotifier, CounterModel>((ref) {
   return CounterNotifier();
 });
+
+final viewStateProvider = StateNotifierProvider.autoDispose<ViewsNotifier, ViewsState>(
+      (ref) => ViewsNotifier(),
+);
