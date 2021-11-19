@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:h1_flutter_riverpod/data/models/counter_model.dart';
 
 // class to control the state, in particular to store its current value
 // and increase it when the user presses the + button
@@ -14,10 +15,4 @@ class CounterNotifier extends StateNotifier<CounterModel> {
   }
 }
 
-//class to represent the state
-class CounterModel {
-  const CounterModel(this.count);
 
-  //state is immutable
-  final int count;
-}
