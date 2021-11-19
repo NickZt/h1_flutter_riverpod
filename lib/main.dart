@@ -1,34 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'states/counter.dart';
-import 'states/even_counter.dart';
-
-final _isEvenProvider = Provider<bool>((ref) {
-  final counter = ref.watch(_counterProvider);
-  return (counter.count % 2 == 0);
-});
-
-// StateNotifier and even numbers counter in a separate class
-final _evenCounterProviderAsSeparateState =
-    StateNotifierProvider<EvenCounterNotifier, EvenCounterModel>((ref) {
-  return EvenCounterNotifier();
-});
-
-//  StateProvider and even numbers counter in a state provider
-final _evenCounterProvider = Provider<int>((ref) {
-  ref.listen<bool>(_isEvenProvider, (previous, next) {
-    if (next) {
-      ref.state++;
-    }
-  });
-  return 0;
-});
-
-final _counterProvider =
-    StateNotifierProvider<CounterNotifier, CounterModel>((ref) {
-  return CounterNotifier();
-});
+import 'package:h1_flutter_riverpod/presentation/pages/home_page.dart';
 
 void main() {
   runApp(
@@ -60,67 +32,5 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends ConsumerWidget {
-  const MyHomePage({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final counter = ref.watch(_counterProvider).count;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Counter Provider Page'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Count: $counter'),
-            CounterIsEven(),
-            EvenCounter(),
-            EvenCounterFromProvider(),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ref.read(_counterProvider.notifier).increment();
-          final isEven = ref.watch(_isEvenProvider);
-          if (isEven)
-            ref.read(_evenCounterProviderAsSeparateState.notifier).increment();
-        },
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
 
-class CounterIsEven extends ConsumerWidget {
-  const CounterIsEven({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isEven = ref.watch(_isEvenProvider);
-    return Text(isEven ? 'Is even' : 'Not even');
-  }
-}
-
-class EvenCounterFromProvider extends ConsumerWidget {
-  const EvenCounterFromProvider({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final evenCount = ref.watch(_evenCounterProvider);
-    return Text('(StateProvider) Even Number Count: $evenCount');
-  }
-}
-
-class EvenCounter extends ConsumerWidget {
-  const EvenCounter({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final evenCount = ref.watch(_evenCounterProviderAsSeparateState).count;
-    return Text(' (StateNotifier) Even Number Count: $evenCount');
-  }
-
-}

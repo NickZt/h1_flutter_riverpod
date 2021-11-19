@@ -1,6 +1,6 @@
 # MVI & Clean Code: Rendering Logic of State in Flutter : Riverpod story part 1
 
-**To read the story**: https://codingstories.io/stories/61811e66d46036002a1a08a1/6197d2d64f8b1a001d1a83ed
+**To read the story**: https://codingstories.io/story/61811e66d46036002a1a08a1/https:%2F%2Fgitlab.com%2FNickZt%2Ffsm_view_state_tdd
 
 **To code yourself**: https://gitlab.com/NickZt/h1_flutter_riverpod.git
 
@@ -18,4 +18,4 @@ Read a short story about on how to create MVI style UI logic (using Clean Archit
 **Practical task tag for self-study**: task
 > `git checkout task`
 
-Tags: #TDD, #kotlin, #MVI
+Tags: #kotlin, #MVI
