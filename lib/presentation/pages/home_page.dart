@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:h1_flutter_riverpod/presentation/manager/bindings/counter_view_binding.dart';
+import 'package:h1_flutter_riverpod/presentation/manager/counter_view_model.dart';
 import 'package:h1_flutter_riverpod/presentation/manager/view_states_render_contract.dart';
 import 'package:h1_flutter_riverpod/presentation/widgets/counter_widget.dart';
 
@@ -9,7 +9,8 @@ class MyHomePage extends ConsumerWidget with ViewStatesRenderContract {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(viewStateProvider);
+    final state =
+        ref.watch(viewModelProvider.select((value) => value.state));
     return Scaffold(
       appBar: AppBar(
         title: Text('Counter Provider Page'),
@@ -17,7 +18,7 @@ class MyHomePage extends ConsumerWidget with ViewStatesRenderContract {
       body: render(state, ref),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          onFabPressed(ref);
+          ref.read(viewModelProvider.notifier).onFabPressed();
         },
         child: Icon(Icons.add),
       ),
@@ -35,7 +36,6 @@ class MyHomePage extends ConsumerWidget with ViewStatesRenderContract {
           Text('Count: $counter'),
           CounterIsEven(),
           EvenCounter(),
-          EvenCounterFromProvider(),
         ],
       ),
     );
@@ -50,19 +50,12 @@ class MyHomePage extends ConsumerWidget with ViewStatesRenderContract {
         children: [
           CounterIsEven(),
           EvenCounter(),
-          EvenCounterFromProvider(),
           Text('Count: $counter'),
         ],
       ),
     );
   }
 
-  buildCount(WidgetRef ref) => ref.watch(counterProvider).count;
-
-  void onFabPressed(WidgetRef ref) {
-    ref.read(counterProvider.notifier).increment();
-    final isEven = ref.watch(isEvenProvider);
-    if (isEven)
-      ref.read(evenCounterProviderAsSeparateState.notifier).increment();
-  }
+  buildCount(WidgetRef ref) =>
+      ref.watch(viewModelProvider.select((value) => value.counter.count));
 }
