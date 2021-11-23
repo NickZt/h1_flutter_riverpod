@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:h1_flutter_riverpod/data/models/counter_model.dart';
+import 'package:h1_flutter_riverpod/data/repository/Repository.dart';
+import 'package:h1_flutter_riverpod/domain/usecase/UseCase.dart';
 
 import 'model/view_state.dart';
 
 final viewModelProvider = ChangeNotifierProvider((ref) => ViewModel());
 
 class ViewModel extends ChangeNotifier {
-  ViewModel();
+  ViewModel() {
+    _useCase.iniLoad();
+  }
 
-  CounterModel _counter = CounterModel(0);
+  final UseCase _useCase = Repository();
 
-  CounterModel get counter => _counter;
+  CounterModel get counter => _useCase.getCounter();
 
   void increment() {
-    _counter = CounterModel(_counter.count + 1);
+    _useCase.increment();
   }
 
   bool isEven() {
-    return (_counter.count % 2 == 0);
+    return _useCase.isEven();
   }
 
   ViewState _state = ViewState.odd();
@@ -32,12 +36,11 @@ class ViewModel extends ChangeNotifier {
 
   void setState(ViewState viewsState) => _state = viewsState;
 
-  CounterModel _evenCounter = CounterModel(0);
 
-  CounterModel get evenCounter => _evenCounter;
+  CounterModel get evenCounter => _useCase.getEvenCounter();
 
   void incrementEvenCounter() {
-    _evenCounter = CounterModel(_evenCounter.count + 1);
+    _useCase.incrementEvenCounter();
   }
 
   void onFabPressed() {
