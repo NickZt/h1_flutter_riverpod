@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:h1_flutter_riverpod/presentation/manager/bindings/counter_view_binding.dart';
+import 'package:h1_flutter_riverpod/presentation/manager/view_states_render_contract.dart';
 import 'package:h1_flutter_riverpod/presentation/widgets/counter_widget.dart';
 
-class MyHomePage extends ConsumerWidget {
+class MyHomePage extends ConsumerWidget with ViewStatesRenderContract {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
@@ -23,15 +24,8 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 
-  Widget render(state, WidgetRef ref ) {
-    return state.when(
-      even: () =>
-          showEven(ref),
-      odd: () =>
-          showOdd(ref),
-    );
-  }
 
+  @override
   Widget showEven(WidgetRef ref) {
     final counter = buildCount(ref);
     return Center(
@@ -47,6 +41,7 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 
+  @override
   Widget showOdd(WidgetRef ref) {
     final counter = buildCount(ref);
     return Center(
@@ -62,10 +57,7 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 
-  buildCount(WidgetRef ref) =>
-      ref
-          .watch(counterProvider)
-          .count;
+  buildCount(WidgetRef ref) => ref.watch(counterProvider).count;
 
   void onFabPressed(WidgetRef ref) {
     ref.read(counterProvider.notifier).increment();
