@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'views_state.dart';
+part of 'view_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -30,7 +30,7 @@ class _$ViewsStateTearOff {
 const $ViewsState = _$ViewsStateTearOff();
 
 /// @nodoc
-mixin _$ViewsState {
+mixin _$ViewState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() odd,
@@ -74,7 +74,7 @@ mixin _$ViewsState {
 /// @nodoc
 abstract class $ViewsStateCopyWith<$Res> {
   factory $ViewsStateCopyWith(
-          ViewsState value, $Res Function(ViewsState) then) =
+          ViewState value, $Res Function(ViewState) then) =
       _$ViewsStateCopyWithImpl<$Res>;
 }
 
@@ -82,9 +82,9 @@ abstract class $ViewsStateCopyWith<$Res> {
 class _$ViewsStateCopyWithImpl<$Res> implements $ViewsStateCopyWith<$Res> {
   _$ViewsStateCopyWithImpl(this._value, this._then);
 
-  final ViewsState _value;
+  final ViewState _value;
   // ignore: unused_field
-  final $Res Function(ViewsState) _then;
+  final $Res Function(ViewState) _then;
 }
 
 /// @nodoc
@@ -185,7 +185,7 @@ class _$_Odd implements _Odd {
   }
 }
 
-abstract class _Odd implements ViewsState {
+abstract class _Odd implements ViewState {
   const factory _Odd() = _$_Odd;
 }
 
@@ -287,6 +287,6 @@ class _$_Even implements _Even {
   }
 }
 
-abstract class _Even implements ViewsState {
+abstract class _Even implements ViewState {
   const factory _Even() = _$_Even;
 }
