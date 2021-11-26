@@ -5,7 +5,9 @@ abstract class UseCase {
 
   void incrementEvenCounter();
 
-  bool isEven();
+  bool isEven() {
+    return (getCounter().count % 2 == 0);
+  }
 
   CounterModel getCounter();
 
