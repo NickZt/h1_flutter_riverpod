@@ -17,7 +17,7 @@ class ViewModel extends ChangeNotifier {
 
   CounterModel get counter => _useCase.getCounter();
 
-  void increment() {
+  void _increment() {
     _useCase.increment();
   }
 
@@ -29,32 +29,32 @@ class ViewModel extends ChangeNotifier {
 
   ViewState get state => _state;
 
-  void resetState() {
+  void _resetState() {
     _state = ViewState.odd();
     notifyListeners();
   }
 
-  void setState(ViewState viewsState) => _state = viewsState;
+  void _setState(ViewState viewsState) => _state = viewsState;
 
 
   CounterModel get evenCounter => _useCase.getEvenCounter();
 
-  void incrementEvenCounter() {
+  void _incrementEvenCounter() {
     _useCase.incrementEvenCounter();
   }
 
   void onFabPressed() {
-    increment();
+    _increment();
     if (isEven()) {
       setEvenState();
     } else
-      resetState();
+      _resetState();
   }
 
 
   void setEvenState() {
-    incrementEvenCounter();
-    setState(ViewState.even());
+    _incrementEvenCounter();
+    _setState(ViewState.even());
     notifyListeners();
   }
 }
